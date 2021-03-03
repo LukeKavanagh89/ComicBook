@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Comic";
+}
+
+<h2>Search for Comic through Id</h2>
+
+<div class=" col-lg-10">
+    <input type="text" id="ComicId" size="5" />
+    <input type="submit" name="SearchButton" id="SearchButton" value="Search" />
+
+</div>
+<br/>
+<div id="divProcessing">
+    <p> Processing, Please wait... <img src="../../ajax-loader.gif" height="50" /></p>
+</div>
+<br/>
+<div id="divResult">
+</div>
+
+@section Scripts {
+    @scripts.Render("~/bundles/jqueryval")
+ 
+    <script type="text/javascript"
+    
+    $(document).ready(function(){
+            $("#divProcessing").hide();
+            $('#SearchButton').click(function () {
+              search();
+            });
+    });
+
+     function search() {
+           $("#divResult").empty();
+           $("divProcessing").show();
+            var ComicId =$("#ComicId").val();
+            var url ="../api/Comics/" + ComicId;
+            $.ajax({
+            url: url
+            type: "GET",
+            datatype: "json",
+            sucess: function (resp) {
+               $("#divprocessing").hide();
+               $("<h3>Result"</h3>").append("#divResult");
+               $("#divResult").append("<p>Title:" + resp.Title + "<br />Creator:" + resp.Creator + "<br />");
+               $("#divResult").append("Designer:<br/>");
+               for (var i = 0; i < resp.Designer.length; i++) {
+                 $("#divResult").append(resp.Designer[i].Name + "" + resp.Designer[i].Comapny +"<br/>");
+              }
+              $("#divResult").append("</p>");
+            }
+           })
+         }
+       </script>
+    
